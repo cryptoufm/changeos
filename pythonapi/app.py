@@ -1,6 +1,7 @@
-from flask import Flask, request
+from flask import Flask, request, Response
 import json
 import ipfsconnector
+from eosfactory.eosf import *
 
 app = Flask(__name__)
 
@@ -14,7 +15,7 @@ def eos():
     req = request.get_json()
     image = req.get('image_hash', None)
     cui = req.get('citizenuid', None)
-    volID = req.get('volunteer_id', None)
+    volunteer_id = req.get('volunteer_id', None)
 
     # Step 1
     # Hash the image into IPFS
@@ -22,23 +23,38 @@ def eos():
 
     # Step 2
     # Call contract method Verify(VolunteerID ,CUI, imgHash) + Add
+    contract.push_action("insert", {
+        "citizen_uid": cui, 
+        "volunteer_id": volunteer_id, 
+        "image_hash": img_hash['Hash']
+        }, 
+        permission=host)
 
+    resp = Response(json.dumps(req), status=200, mimetype='application/json')
 
-    return img_hash['Name']
+    return resp
 
-@app.route("/reflist", methods=['GET'])
+@app.route("/referendum", methods=['GET'])
 def reflist():
 
     # Call contract method voteList
+    votes = host.table("petition", host)
+    js = json.dumps({
+        "uids": votes.keys()
+    })
+    resp = Response(js, status=200, mimetype='application/json')
+    
+    return resp
 
-    return 
-
-@app.route("/voteInfo/<vote>", methods=['GET'])
-def vote(vote):
+@app.route("/voteInfo/<uid>", methods=['GET'])
+def vote(uid):
 
     # Call contract method getVoteInfo
-
-    return json.dumps(vote)
+    votes = host.table("petition", host)
+    print(votes[uid])
+    
+    resp = Response(json.dumps(votes[uid]), status=200, mimetype='application/json')
+    return resp
 
 if __name__ == '__main__':
     app.run()
