@@ -15,5 +15,5 @@ def getImage(hash):
 if __name__ == "__main__":
     api = ipfsapi.connect('127.0.0.1', 5001)
 
-hs = hashImage(api,'dpi_0.png')
+hs = hashImage('dpi_0.png')
 #getImage(api, 'QmdodXR3WWQGxmUmQsZy9PjuzYuUwAiEgCMif92ChLq2sJ')
