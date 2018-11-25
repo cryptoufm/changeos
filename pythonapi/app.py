@@ -1,7 +1,6 @@
 from flask import Flask, request
 import json
-import ipfsapi
-import ipfsconnector as ipfs
+import ipfsconnector
 
 app = Flask(__name__)
 
@@ -19,13 +18,13 @@ def eos():
 
     # Step 1
     # Hash the image into IPFS
-    img_hash = ipfs.hashImage(image)['Hash']
+    img_hash = ipfsconnector.hashImage(image)
 
     # Step 2
     # Call contract method Verify(VolunteerID ,CUI, imgHash) + Add
 
 
-    return json.dumps(req)
+    return img_hash['Name']
 
 @app.route("/reflist", methods=['GET'])
 def reflist():
@@ -42,7 +41,6 @@ def vote(vote):
     return json.dumps(vote)
 
 if __name__ == '__main__':
-    api = ipfsapi.connect('127.0.0.1', 5001)
     app.run()
 
 
