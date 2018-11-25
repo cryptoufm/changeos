@@ -8,18 +8,18 @@ app = Flask(__name__)
 
 @app.route("/test/")
 def testeo():
-    return "bendi"
+    return "test success"
 
 @app.route("/", methods=['POST'])
 def eos():
     req = request.get_json()
-    image = req.get('image', None)
-    cui = req.get('cui', None)
-    volID = req.get('vol', None)
+    image = req.get('image_hash', None)
+    cui = req.get('citizenuid', None)
+    volID = req.get('volunteer_id', None)
 
     # Step 1
     # Hash the image into IPFS
-    img_hash = ipfs.hashImage(image)['HASH']
+    img_hash = ipfs.hashImage(image)['Hash']
 
     # Step 2
     # Call contract method Verify(VolunteerID ,CUI, imgHash) + Add
