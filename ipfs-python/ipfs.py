@@ -1,12 +1,12 @@
 import ipfsapi
 
 
-def hashImage(api, bytecode):
+def hashImage(bytecode):
     res = api.add(bytecode)
     print(res)
     return res
 
-def getImage(api, hash):
+def getImage(hash):
     img = api.cat(hash)
     print(type(img))
     return img
@@ -15,5 +15,5 @@ def getImage(api, hash):
 if __name__ == "__main__":
     api = ipfsapi.connect('127.0.0.1', 5001)
 
-#hs = hashImage(api,'dpi_0.png')
+hs = hashImage(api,'dpi_0.png')
 #getImage(api, 'QmdodXR3WWQGxmUmQsZy9PjuzYuUwAiEgCMif92ChLq2sJ')

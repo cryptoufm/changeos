@@ -1,11 +1,11 @@
 from app import api
 
-def hashImage(api, bytecode):
+def hashImage(bytecode):
     res = api.add(bytecode)
     print(res)
     return res
 
-def getImage(api, hash):
+def getImage(hash):
     img = api.cat(hash)
     print(type(img))
     return img
