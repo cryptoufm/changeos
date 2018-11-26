@@ -50,10 +50,14 @@ def vote(uid):
 
     # Call contract method getVoteInfo
     votes = host.table("petition", host)
-    print(votes[uid])
-        
-    resp = Response(json.dumps(votes[uid]), status=200, mimetype='application/json')
-    return resp
+    for vote in votes.json["Rows"]:   
+    	if (vote["citizenuid"] == uid):
+		value = vote
+    if (value): 
+    	resp = Response(json.dumps(value), status=200, mimetype='application/json')
+    	return resp
+    else:
+	return "Invalid UID"
 
 contract = ContractBuilder("referendum")
 contract.build()
