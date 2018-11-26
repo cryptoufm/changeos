@@ -1,0 +1,7 @@
+[program:pythonapi]
+directory=/home/eegodinez/changeos/pythonapi
+command=/home/eegodinez/changeos/pythonapi/gunicorn app:app -b localhost:8000
+autostart=true
+autorestart=true
+stderr_logfile=/var/log/pythonapi/pythonapi.err.log
+stdout_logfile=/var/log/pythonapi/pythonapi.out.log

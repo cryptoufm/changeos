@@ -8,7 +8,8 @@ app = Flask(__name__)
 
 @app.route("/test/")
 def testeo():
-    return "test success"
+    print("IS PRINTING")    
+    return "test is  success"
 
 @app.route("/", methods=['POST'])
 def eos():
@@ -39,9 +40,7 @@ def reflist():
 
     # Call contract method voteList
     votes = host.table("petition", host)
-    js = json.dumps({
-        "uids": votes.keys()
-    })
+    js = json.dumps(votes.json)
     resp = Response(js, status=200, mimetype='application/json')
     
     return resp
@@ -52,13 +51,22 @@ def vote(uid):
     # Call contract method getVoteInfo
     votes = host.table("petition", host)
     print(votes[uid])
-    
+        
     resp = Response(json.dumps(votes[uid]), status=200, mimetype='application/json')
     return resp
 
-if __name__ == '__main__':
-    app.run()
+contract = ContractBuilder("referendum")
+contract.build()
+#print("INIT TESTNET")
+reset()
+create_master_account("master")
+create_account("host", master)
+contract = Contract(host, contract.path())
+contract.deploy()
 
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0')
 
 
 

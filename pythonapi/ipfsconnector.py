@@ -15,7 +15,5 @@ def getImage(hash):
     print(type(img))
     return img
 
-def initipfs():
-    return ipfsapi.connect('127.0.0.1', 5001)
+api = ipfsapi.connect('127.0.0.1', 5001)
 
-api = initipfs()
